@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "01-cuerdas",
+    "title": "Cuerdas",
+    "description": "La t se convierte en el puente de una cítara. Letras dibujadas desde cero, abiertas y cercanas."
+  },
+  {
+    "slug": "02-contrapunto",
+    "title": "Contrapunto",
+    "description": "Una firma editorial con una t de doble travesaño: dos voces que se coordinan."
+  },
+  {
+    "slug": "03-armonia",
+    "title": "Armonía",
+    "description": "Mayúsculas arquitectónicas. Las dos A comparten cuerdas tensadas y un ritmo reconocible."
+  },
+  {
+    "slug": "04-enlace",
+    "title": "Enlace",
+    "description": "Una ligadura visual une i y t: la conversación y la cita como un mismo gesto."
+  },
+  {
+    "slug": "05-resonancia",
+    "title": "Resonancia",
+    "description": "Contraste de trazos y una C que resuena. La dirección más expresiva y cultural."
+  },
+  {
+    "slug": "06-compas",
+    "title": "Compás",
+    "description": "Una marca compacta y firme, con cortes de cuerda y una i que marca el pulso."
+  }
+]
