@@ -75,7 +75,9 @@ CI valida tipos, compila y conserva el export como artefacto. No despliega en Fi
 
 ## Rendimiento
 
-HTML prerenderizado, SVG ligeros, tipografías WOFF2 locales, sin fotos pesadas, trackers ni embeds externos al inicio. El video usa `preload="none"`; la demo no hace peticiones a WhatsApp ni al backend. Se respeta `prefers-reduced-motion` y no se inicia reproducción automática.
+HTML prerenderizado, SVG ligeros, tipografías WOFF2 locales, sin fotos pesadas, trackers ni embeds externos al inicio. El video usa `preload="none"`; la demo no hace peticiones a WhatsApp ni al backend. Se respeta `prefers-reduced-motion` y el video no se reproduce solo.
+
+El fondo del inicio (`components/HeroFlow.tsx`, con el dibujo en `lib/hero-flow.ts`) es una animación propia en WebGL, sin librerías ni archivos que descargar. Dibuja en un Web Worker con `OffscreenCanvas`, así que ni crear el contexto ni dibujar bloquea la página, aunque el navegador dibuje por software (sin GPU); en navegadores sin `OffscreenCanvas` corre en la página. Arranca cuando el navegador queda libre, se detiene fuera de pantalla, con `prefers-reduced-motion` queda un cuadro quieto y, sin WebGL, se ve el verde liso.
 
 **El objetivo Lighthouse móvil ≥90 todavía no está certificado.** El entorno permitió inspección visual e interacciones, pero no una auditoría Lighthouse móvil de producción. No se inventa un resultado. Para medir el export servido, con Chrome instalado:
 
