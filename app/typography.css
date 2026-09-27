@@ -1,0 +1,54 @@
+/* Visual reference: the owner's five Freshworks mobile captures.
+   Lora is a visual approximation, not a claim about Freshworks' font family.
+   Load after globals.css so the scale also replaces its breakpoint rules. */
+:root {
+  --font-editorial: Lora, Georgia, serif;
+  --type-title: clamp(2.5rem, 4.4vw, 4rem);
+  --type-hero: clamp(3rem, 5.3vw, 5rem);
+}
+body { font-family: DM, Arial, sans-serif; line-height: 1.6; }
+h1, h2 { font-family: var(--font-editorial); font-weight: 400; letter-spacing: -.025em; line-height: 1.12; }
+h1 em, h2 em { font-weight: 700; font-style: italic; letter-spacing: -.03em; }
+.hero h1 { font-size: var(--type-hero); line-height: 1.1; }
+h2, .section-heading h2, .center-heading h2, .trial-layout h2,
+.faq-section h2, .closing h2, .implementation h2 { font-size: var(--type-title); }
+.subpage-heading h1, .contact-page h1, .legal-page h1, .identity-page h1 {
+  font-size: clamp(2.75rem, 4.8vw, 4.5rem);
+}
+.tour-copy h3, .video-heading h3, .sector-grid h3, .logo-title h2 {
+  font-family: var(--font-editorial); font-weight: 500;
+  font-size: clamp(1.5rem, 2.5vw, 2.1rem); line-height: 1.22; letter-spacing: -.02em;
+}
+.hero-copy > p:not(.eyebrow) { font-size: 1.125rem; line-height: 1.55; }
+.section-heading > p, .center-heading > p:last-child, .tour-copy p:last-child,
+.problem-grid p, .sector-grid p, .feature-notes p, .trial-steps p {
+  font-size: 1rem; line-height: 1.6;
+}
+.eyebrow { font-weight: 600; letter-spacing: .1em; }
+.hero .eyebrow, .center-heading .eyebrow, .closing .eyebrow {
+  font-size: .75rem; letter-spacing: .1em;
+}
+.button, .hero .button { font-size: .9375rem; font-weight: 600; line-height: 1.4; }
+.nav-actions .button { font-size: .875rem; }
+.problem-number, .trial-steps li > span, .fact-card strong {
+  font-family: var(--font-editorial); font-weight: 400; line-height: 1.1;
+  font-variant-numeric: lining-nums;
+}
+.fact-card strong { font-size: 3.5rem; }
+/* Compact UI headings remain sans serif; editorial type belongs to the story. */
+.pricing-grid h2, .contact-card h2, .legal-page section h2 {
+  font-family: DM, Arial, sans-serif; font-weight: 600;
+}
+@media (max-width: 800px) {
+  :root { --type-hero: clamp(2.75rem, 7.5vw, 4rem); --type-title: clamp(2.125rem, 5.8vw, 3rem); }
+}
+@media (max-width: 560px) {
+  :root { --type-hero: clamp(2.125rem, 10.2vw, 3rem); --type-title: clamp(1.875rem, 8.4vw, 2.5rem); }
+  .hero h1 { letter-spacing: -.03em; }
+  .hero-copy > p:not(.eyebrow) { font-size: 1.0625rem; line-height: 1.55; }
+  .hero .eyebrow, .center-heading .eyebrow, .closing .eyebrow { font-size: .6875rem; }
+  .subpage-heading h1, .contact-page h1, .legal-page h1, .identity-page h1 { font-size: clamp(2rem, 9vw, 2.75rem); }
+  .tour-copy h3, .sector-grid h3, .video-heading h3 { font-size: 1.625rem; }
+  .nav-actions .button { font-size: .8125rem; }
+  .fact-card strong { font-size: 3rem; }
+}
