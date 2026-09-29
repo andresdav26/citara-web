@@ -1,6 +1,6 @@
 import { startHeroFlow, type HeroFlowState } from './hero-flow';
 
-// Worker side of components/HeroFlow.tsx: draws the hero background on the canvas the page handed over.
+// Lado del worker de components/HeroFlow.tsx: dibuja las cuerdas del hero en el lienzo que le cedió la página.
 
 declare const self: {
   onmessage: ((event: MessageEvent<{ canvas?: OffscreenCanvas; state: HeroFlowState }>) => void) | null;

@@ -3,9 +3,9 @@
 import { useEffect, useRef } from 'react';
 import type { HeroFlowState } from '@/lib/hero-flow';
 
-// Animated hero background; the renderer lives in lib/hero-flow.ts. It draws in a worker when the browser can hand
-// the canvas over, so neither creating the WebGL context nor drawing blocks the page, even when there is no GPU.
-// Without WebGL the plain hero color stays; with reduced motion a single still frame is drawn.
+// Fondo animado del hero; el dibujo de las cuerdas vive en lib/hero-flow.ts. Se dibuja en un worker cuando el
+// navegador puede cederle el lienzo, así el dibujo no bloquea la página; si no, se dibuja en el hilo principal.
+// Sin Canvas 2D queda el color plano del hero; con movimiento reducido se dibuja un solo cuadro fijo.
 
 export default function HeroFlow() {
   const ref = useRef<HTMLDivElement>(null);
