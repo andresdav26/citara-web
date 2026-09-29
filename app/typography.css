@@ -30,11 +30,10 @@ h2, .section-heading h2, .center-heading h2, .trial-layout h2,
 }
 .button, .hero .button { font-size: .9375rem; font-weight: 600; line-height: 1.4; }
 .nav-actions .button { font-size: .875rem; }
-.problem-number, .trial-steps li > span, .fact-card strong {
+.problem-number, .trial-steps li > span {
   font-family: var(--font-editorial); font-weight: 400; line-height: 1.1;
   font-variant-numeric: lining-nums;
 }
-.fact-card strong { font-size: 3.5rem; }
 /* Compact UI headings remain sans serif; editorial type belongs to the story. */
 .pricing-grid h2, .contact-card h2, .legal-page section h2 {
   font-family: DM, Arial, sans-serif; font-weight: 600;
@@ -50,5 +49,4 @@ h2, .section-heading h2, .center-heading h2, .trial-layout h2,
   .subpage-heading h1, .contact-page h1, .legal-page h1 { font-size: clamp(2rem, 9vw, 2.75rem); }
   .tour-copy h3, .sector-grid h3 { font-size: 1.625rem; }
   .nav-actions .button { font-size: .8125rem; }
-  .fact-card strong { font-size: 3rem; }
 }

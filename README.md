@@ -1,6 +1,6 @@
 # Citara web
 
-Sitio comercial de Citara. Next.js App Router + TypeScript + Tailwind CSS + Framer Motion. Node **22.16.0**, npm y exportación estática para Firebase Hosting. Rama local: `main`.
+Sitio comercial de Citara. Next.js App Router + TypeScript + Tailwind CSS. Node **22.16.0**, npm y exportación estática para Firebase Hosting. Rama local: `main`.
 
 ## Ejecutar
 
