@@ -35,11 +35,11 @@ export default function VideoDialog() {
 
   return (
     <>
-      <button ref={trigger} type="button" className="video-trigger" aria-label="Reproducir el video de Citara" onClick={show}>
+      <button ref={trigger} type="button" className="video-trigger" aria-label="Ver video: reproducir el video de Citara" onClick={show}>
         <span className="video-trigger-circle" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
         </span>
-        <span className="video-trigger-label" aria-hidden="true">Ver video</span>
+        <span className="video-trigger-label">Ver video</span>
       </button>
       <dialog
         ref={dialog}

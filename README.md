@@ -76,9 +76,11 @@ CI valida tipos, compila y conserva el export como artefacto. No despliega en Fi
 
 HTML prerenderizado, SVG ligeros, tipografías WOFF2 locales, sin fotos pesadas, trackers ni embeds externos al inicio. El video usa `preload="none"`; la demo no hace peticiones a WhatsApp ni al backend. Se respeta `prefers-reduced-motion` y el video no se reproduce solo.
 
-El fondo del inicio (`components/HeroFlow.tsx`, con el dibujo en `lib/hero-flow.ts`) es una animación propia en WebGL, sin librerías ni archivos que descargar. Dibuja en un Web Worker con `OffscreenCanvas`, así que ni crear el contexto ni dibujar bloquea la página, aunque el navegador dibuje por software (sin GPU); en navegadores sin `OffscreenCanvas` corre en la página. Arranca cuando el navegador queda libre, se detiene fuera de pantalla, con `prefers-reduced-motion` queda un cuadro quieto y, sin WebGL, se ve el verde liso.
+El fondo del hero (`components/HeroFlow.tsx`, con el dibujo en `lib/hero-flow.ts`) son cuerdas animadas en Canvas 2D, sin librerías ni archivos que descargar. Dibuja en un Web Worker con `OffscreenCanvas`, así que el dibujo no bloquea la página; en navegadores sin `OffscreenCanvas` corre en la página. Arranca cuando el navegador queda libre, dibuja a unos 30 cuadros por segundo, se detiene fuera de pantalla, con `prefers-reduced-motion` queda un cuadro quieto sin destellos y, sin Canvas 2D, se ve el fondo pizarra liso.
 
-**El objetivo Lighthouse móvil ≥90 todavía no está certificado.** El entorno permitió inspección visual e interacciones, pero no una auditoría Lighthouse móvil de producción. No se inventa un resultado. Para medir el export servido, con Chrome instalado:
+Las secciones "El día no tiene más horas" (`components/BusyDay.tsx`) y "Dos lados de una misma cita" (`components/ProductDemo.tsx`) se fijan al scroll con `position: sticky` y un solo listener pasivo (`lib/pinned.ts`). El HTML estático, el movimiento reducido y las pantallas bajas muestran la versión sin fijar.
+
+**Lighthouse móvil ≥90: medido en local, no contra Firebase.** Ver `docs/VALIDACION.md`. `npm run preview` sirve los archivos sin comprimir y Firebase Hosting sí los comprime, así que el puntaje de rendimiento del preview local sale más bajo que el real (75 contra 96 con gzip en la misma compilación). Para medir el export servido, con Chrome instalado:
 
 ```bash
 npm run build
@@ -87,7 +89,7 @@ npm run preview
 npm run audit:mobile
 ```
 
-El comando genera `qa/lighthouse-mobile.html` y `.json`; `npm run audit:check` falla si rendimiento es menor de 90. Ejecutar en inicio y planes, y nuevamente contra Firebase. El resultado de laboratorio no garantiza la velocidad de todas las conexiones en Colombia.
+El comando genera `qa/lighthouse-mobile.report.html` y `.report.json`; `npm run audit:check` falla si rendimiento es menor de 90. Ejecutar en inicio y planes, y nuevamente contra Firebase. El resultado de laboratorio no garantiza la velocidad de todas las conexiones en Colombia.
 
 ## Identidad
 

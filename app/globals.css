@@ -14,7 +14,9 @@
 
 /* Scroll choreography and the two product-story surfaces. */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--reveal-delay,0ms)}
-.reveal.is-visible{opacity:1;transform:none}.reveal.sector-grid{display:block}
+.reveal.is-visible{opacity:1;transform:none}
+/* El texto del hero se pinta sin animación (es el LCP); la maqueta entra solo con CSS, sin esperar a que hidrate React. */
+@keyframes hero-in{from{opacity:0;transform:translateY(24px)}}.hero-enter{animation:hero-in .7s cubic-bezier(.2,.7,.2,1) both}.reveal.sector-grid{display:block}
 @media(max-width:650px){.reveal{transform:translateY(16px);transition-duration:.55s}}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
 
