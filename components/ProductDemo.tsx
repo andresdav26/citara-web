@@ -1,10 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Reveal from './Reveal';
 import VideoDialog from './VideoDialog';
+import { clamp, useMediaQuery, watchPinned } from '@/lib/pinned';
 
-// Scroll-driven product tour: each step plays its WhatsApp conversation when it scrolls into view,
-// then the panel shows the result. A sticky list on wide screens marks the step being read.
+// Recorrido "Dos lados de una misma cita" (docs/rediseno/REDISENO.md §5.2, prototipo DosLados.dc.html).
+// En escritorio es un escenario fijo: el scroll avanza por las cinco escenas, los mensajes aparecen según el avance
+// y un pulso lleva el resultado del teléfono a la agenda. En pantallas más chicas, y en el HTML estático, cada paso
+// reproduce su conversación al entrar en pantalla y luego el panel muestra el resultado.
 
 type Message = { from: 'client' | 'agent'; text: string };
 type Scene = {
@@ -229,7 +233,7 @@ function Step({ scene, index }: { scene: Scene; index: number }) {
   );
 }
 
-export default function ProductDemo() {
+function Tour() {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
@@ -255,8 +259,234 @@ export default function ProductDemo() {
       </nav>
       <div>
         {scenes.map((scene, i) => <Step key={scene.name} scene={scene} index={i} />)}
-        <p className="tour-note">Demostración ilustrativa con datos de ejemplo. No se envían mensajes reales.</p>
+        <p className="tour-note">{NOTE}</p>
       </div>
     </div>
+  );
+}
+
+const NOTE = 'Demostración ilustrativa con datos de ejemplo. No se envían mensajes reales.';
+const STAGE_QUERY = '(min-width: 1100px) and (min-height: 700px)';
+const SCENE_SCROLL = 700; // recorrido por escena: 4400 − 900 px para cinco escenas en el prototipo
+const ANCHOR_OFFSET = 40; // el ancla queda un poco dentro de su escena, después del scroll-padding del header
+const threshold = (i: number) => 0.06 + i * 0.13; // el mensaje i aparece en este avance de la escena
+const PULSE = 0.2; // duración del pulso dentro de la escena
+
+type StageView = { index: number; shown: number; typing: boolean; done: boolean; justDone: boolean; pulse: boolean; hint: boolean };
+
+function stageAt(p: number, reduced: boolean): { view: StageView; t: number } {
+  const position = p * scenes.length;
+  const index = Math.min(scenes.length - 1, Math.floor(position));
+  // Con movimiento reducido cada escena muestra directamente su estado final.
+  const sp = reduced ? 1 : Math.min(1, position - index);
+  const chat = scenes[index].chat;
+  let shown = 0;
+  let typing = false;
+  for (let i = 0; i < chat.length; i++) {
+    if (sp >= threshold(i)) {
+      shown = i + 1;
+      continue;
+    }
+    typing = chat[i].from === 'agent' && sp >= threshold(i) - 0.06;
+    break;
+  }
+  const start = threshold(chat.length - 1) + 0.05;
+  const end = start + PULSE;
+  const done = sp >= end;
+  return {
+    view: { index, shown, typing, done, justDone: !reduced && done && sp < end + 0.12, pulse: !reduced && sp >= start && sp < end + 0.04, hint: !reduced && p < 0.01 },
+    t: clamp((sp - start) / PULSE),
+  };
+}
+
+function Heading({ scene = false }: { scene?: boolean }) {
+  return (
+    <>
+      <p className="eyebrow">WHATSAPP CONVERSA. TU AGENDA SE ORGANIZA.</p>
+      <h2>Dos lados de una{scene ? ' ' : <br />}<em>misma cita.</em></h2>
+      <p>Tu clienta escribe como siempre. Citara se ocupa de la cita.{scene ? ' ' : <br />}Tu equipo sigue al mando desde el panel.</p>
+    </>
+  );
+}
+
+function Stage() {
+  const track = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const phone = useRef<HTMLDivElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const path = useRef<SVGPathElement>(null);
+  const halo = useRef<SVGCircleElement>(null);
+  const dot = useRef<SVGCircleElement>(null);
+  const flash = useRef<SVGCircleElement>(null);
+  const reduced = useMediaQuery('(prefers-reduced-motion: reduce)');
+  const [view, setView] = useState<StageView>(() => stageAt(0, false).view);
+
+  useEffect(() => {
+    if (!track.current || !stage.current) return;
+
+    // Traza el pulso del borde del teléfono a la celda afectada, o a la pestaña "Por atender".
+    const drawPulse = (index: number, t: number) => {
+      const box = stage.current?.getBoundingClientRect();
+      const from = phone.current?.getBoundingClientRect();
+      const bubbles = phone.current?.querySelectorAll('.bubble');
+      const last = bubbles?.[bubbles.length - 1]?.getBoundingClientRect();
+      const appointment = scenes[index].appointment;
+      const selector = appointment ? `[data-cell="${appointment.to}"]` : '[data-tab="por-atender"]';
+      const to = panel.current?.querySelector(selector)?.getBoundingClientRect();
+      if (!box || !from || !to) return;
+      const s = [from.right - box.left, (last ? last.top + last.height / 2 : from.top + from.height * 0.55) - box.top];
+      const e = [to.left - box.left - (appointment ? 0 : 8), to.top + to.height / 2 - box.top];
+      const c1 = [s[0] + 80, s[1]];
+      const c2 = [e[0] - 80, e[1]];
+      const point = (u: number) => {
+        const v = 1 - u;
+        return [0, 1].map((k) => v * v * v * s[k] + 3 * v * v * u * c1[k] + 3 * v * u * u * c2[k] + u * u * u * e[k]);
+      };
+      let length = 0;
+      let previous = point(0);
+      for (let k = 1; k <= 30; k++) {
+        const next = point(k / 30);
+        length += Math.hypot(next[0] - previous[0], next[1] - previous[1]);
+        previous = next;
+      }
+      const [x, y] = point(t);
+      path.current?.setAttribute('d', `M${s[0]} ${s[1]} C${c1[0]} ${c1[1]} ${c2[0]} ${c2[1]} ${e[0]} ${e[1]}`);
+      path.current?.setAttribute('stroke-dasharray', `${length} ${length}`);
+      path.current?.setAttribute('stroke-dashoffset', String(length * (1 - t)));
+      for (const circle of [halo.current, dot.current]) {
+        circle?.setAttribute('cx', String(x));
+        circle?.setAttribute('cy', String(y));
+      }
+      flash.current?.setAttribute('cx', String(e[0]));
+      flash.current?.setAttribute('cy', String(e[1]));
+    };
+
+    let last = '';
+    return watchPinned(track.current, track.current, stage.current, (p) => {
+      const { view: next, t } = stageAt(p, reduced);
+      const key = JSON.stringify(next);
+      if (key !== last) {
+        last = key;
+        setView(next);
+      }
+      if (next.pulse || next.justDone) drawPulse(next.index, t);
+    });
+  }, [reduced]);
+
+  const scene = scenes[view.index];
+  const appointment = scene.appointment;
+  const hour = appointment ? (view.done ? appointment.to : appointment.from) : null;
+  const showAppointment = Boolean(appointment) && (view.done || appointment?.before !== null);
+  const handoff = Boolean(scene.handoff);
+  const ring = view.justDone ? ' is-ring' : '';
+
+  return (
+    <div ref={track} className="tour-stage">
+      {scenes.map((item, i) => <span key={item.name} id={`paso-${i + 1}`} className="tour-stage-anchor" style={{ top: i * SCENE_SCROLL + ANCHOR_OFFSET }} />)}
+      <div ref={stage} className="tour-stage-scene">
+        <div className="center-heading tour-heading-scene"><Heading scene /></div>
+        <div className="tour-stage-grid">
+          <div className="tour-stage-side">
+            <nav className="tour-stage-nav" aria-label="Pasos del recorrido">
+              <ol>
+                {scenes.map((item, i) => (
+                  <li key={item.name}>
+                    <a href={`#paso-${i + 1}`} aria-current={view.index === i ? 'step' : undefined}><span>{String(i + 1).padStart(2, '0')}</span>{item.name}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+            <div className="tour-stage-copy" aria-hidden="true">
+              <h3>{scene.title}</h3>
+              <p>{scene.intro}</p>
+            </div>
+          </div>
+
+          <div className="demo-phone" ref={phone} aria-hidden="true">
+            <div className="chat-title"><span className="avatar">S</span><div><strong>Spa · WhatsApp</strong><small>Atendido por Citara</small></div><span className="chat-dots">···</span></div>
+            <div className="messages">
+              <span className="chat-day">Conversación de ejemplo</span>
+              {scene.chat.slice(0, view.shown).map((message) => (
+                <p key={`${view.index}-${message.text}`} className={`bubble ${message.from === 'client' ? 'user' : 'agent'}`}>{message.text}</p>
+              ))}
+              {view.typing && <p key={`${view.index}-typing`} className="bubble agent"><span className="typing-dots"><i /><i /><i /></span></p>}
+            </div>
+            <div className="fake-input">Mensaje <span>♧</span></div>
+          </div>
+
+          <div className="demo-panel" ref={panel} aria-hidden="true">
+            <div className="panel-top"><img src="/brand/citara-claro.svg" width="85" height="23" alt="" /><span>Panel de tu negocio</span><span className="avatar">LM</span></div>
+            <div className="panel-inner">
+              <div className="panel-section-nav">
+                <span className={handoff ? '' : 'selected'}>Agenda</span>
+                <span>Clientes</span>
+                <span className={handoff ? 'selected' : ''} data-tab="por-atender">Por atender {handoff && view.done && <b>1</b>}</span>
+              </div>
+              {handoff ? (
+                view.done
+                  ? <div className={`handoff-card${ring}`}><span className="status">Por atender</span><h4>Mariana · Consulta clínica</h4><p>{scene.handoff}</p><div>Citara pasó la conversación al equipo.<br />Una persona debe continuar la atención.</div></div>
+                  : <p className="handoff-empty">No hay conversaciones por atender.</p>
+              ) : (
+                <div>
+                  <div className="panel-date"><div><small>SEPTIEMBRE 2026</small><h3>Viernes 25</h3></div><span className="day-tag">Vista del día</span></div>
+                  <div className="schedule-col"><span>Hora</span><span>Laura · Masajes</span><span>Camila · Masajes</span></div>
+                  {HOURS.map((h) => (
+                    <div className="schedule-row" key={h}>
+                      <span>{h}</span>
+                      <div data-cell={h}>
+                        {showAppointment && appointment && h === hour && (
+                          <div className={`appointment${view.done && appointment.cancelled ? ' cancelled' : ''}${ring}`}>
+                            <small>{h} · Mariana</small>
+                            <strong>Masaje relajante</strong>
+                            <span>{view.done ? appointment.after : appointment.before}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div>{h === '09:00' && <div className="appointment muted"><small>09:00 · Valentina</small><strong>Masaje relajante</strong><span>Agendada</span></div>}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className={`panel-event${view.done ? ' is-shown' : ''}`}><span>✓</span>{scene.event}</div>
+            </div>
+          </div>
+        </div>
+
+        <svg className={`tour-pulse${view.pulse ? ' is-on' : ''}${view.justDone ? ' is-flash' : ''}`} aria-hidden="true">
+          <path ref={path} className="pulse-line" />
+          <circle ref={halo} className="pulse-halo" r="15" />
+          <circle ref={dot} className="pulse-dot" r="7" />
+          <circle ref={flash} className="pulse-flash" r="18" />
+        </svg>
+        <p className={`tour-stage-hint${view.hint ? ' is-shown' : ''}`} aria-hidden="true">
+          Desplázate para ver cada paso
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14m-6-6 6 6 6-6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        </p>
+        <p className="tour-note">{NOTE}</p>
+      </div>
+
+      {/* Las escenas completas, para lectores de pantalla: el escenario visual solo muestra la escena activa. */}
+      <ol className="sr-only">
+        {scenes.map((item) => (
+          <li key={item.name}>
+            <h3>{item.title}</h3>
+            <p>{item.intro}</p>
+            <ul>{item.chat.map((message) => <li key={message.text}>{message.from === 'client' ? 'Clienta' : 'Citara'}: {message.text}</li>)}</ul>
+            <p>Resultado en el panel: {item.event}.</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+export default function ProductDemo() {
+  // El escenario fijo necesita ancho para tres columnas y altura para el teléfono.
+  const staged = useMediaQuery(STAGE_QUERY);
+  return (
+    <>
+      <Reveal className={`center-heading${staged ? ' tour-heading-flow' : ''}`}><Heading /></Reveal>
+      {staged ? <Stage /> : <Tour />}
+    </>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { clamp, useMediaQuery, watchPinned } from '@/lib/pinned';
 
 // Sección "El día no tiene más horas" (docs/rediseno/REDISENO.md §5.1, prototipo Problemas.dc.html).
 // La escena queda fija mientras se recorre una pista de scroll; el avance `p` (0 a 1) mueve el reloj de 8:00 a. m.
@@ -31,7 +32,6 @@ const LATE: Array<[string, number, string]> = [
   ['9:47 p. m.', 21 + 47 / 60, '¿Hacen depilación de axilas?'],
 ];
 
-const clamp = (x: number) => Math.max(0, Math.min(1, x));
 const at = (hours: number) => `${((hours - 8) / 14) * 100}%`;
 
 // Formato colombiano: "3:25 p. m." y "12 m." al mediodía.
@@ -94,21 +94,13 @@ export default function BusyDay() {
   const track = useRef<HTMLDivElement>(null);
   const scene = useRef<HTMLDivElement>(null);
   const time = useRef<HTMLParagraphElement>(null);
-  const [pinned, setPinned] = useState(false);
+  // La escena se fija según el tamaño de la ventana y la preferencia de movimiento.
+  const pinned = useMediaQuery(PIN_QUERY);
   const [view, setView] = useState<View>(STILL);
-
-  // Decide si la escena se fija; cambia con el tamaño de la ventana y la preferencia de movimiento.
-  useEffect(() => {
-    const query = window.matchMedia(PIN_QUERY);
-    const decide = () => setPinned(query.matches);
-    decide();
-    query.addEventListener('change', decide);
-    return () => query.removeEventListener('change', decide);
-  }, []);
 
   useEffect(() => {
     const section = root.current;
-    if (!section) return;
+    if (!section || !track.current || !scene.current) return;
     if (!pinned) {
       section.style.setProperty('--p', String(STILL_P));
       section.style.setProperty('--night', '0');
@@ -117,18 +109,8 @@ export default function BusyDay() {
       return;
     }
 
-    let frame = 0;
-    let header = 0;
     let last = '';
-    const measure = () => {
-      header = document.querySelector<HTMLElement>('.site-header')?.offsetHeight ?? 0;
-      section.style.setProperty('--header-h', `${header}px`);
-    };
-    const apply = () => {
-      frame = 0;
-      if (!track.current || !scene.current) return;
-      const distance = track.current.offsetHeight - scene.current.offsetHeight;
-      const p = distance > 0 ? clamp((header - track.current.getBoundingClientRect().top) / distance) : 0;
+    return watchPinned(section, track.current, scene.current, (p) => {
       section.style.setProperty('--p', p.toFixed(4));
       section.style.setProperty('--night', clamp((p - CLOSE) / NIGHT).toFixed(3));
       if (time.current) time.current.textContent = clock(p);
@@ -139,24 +121,7 @@ export default function BusyDay() {
         last = key;
         setView(next);
       }
-    };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(apply);
-    };
-    const resize = () => {
-      measure();
-      schedule();
-    };
-
-    measure();
-    apply();
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', resize);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', resize);
-    };
+    });
   }, [pinned]);
 
   // En el mazo de móvil, la última tarjeta activada queda arriba y las anteriores asoman detrás.
