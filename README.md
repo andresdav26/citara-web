@@ -35,8 +35,8 @@ En `lib/site.ts` están las tarifas (totales en COP por período), el precio de 
 Copia `.env.example` a `.env.local` y completa:
 
 - `NEXT_PUBLIC_SALES_WHATSAPP`: número de Citara en formato internacional, solo dígitos. Si falta, el botón dirige al aviso de ventas. El mensaje prellenado está en `site.salesMessage`.
-- `NEXT_PUBLIC_PRODUCT_VIDEO_URL`: MP4 real del producto, preferiblemente alojado en Firebase. Sin él se muestra la demo ilustrativa y un aviso visible. No es una grabación del sistema real.
-- `NEXT_PUBLIC_PRODUCT_VIDEO_CAPTIONS_URL`: subtítulos WebVTT en español.
+- `NEXT_PUBLIC_PRODUCT_VIDEO_URL`: opcional. Por defecto el video del producto (`public/video/citara-video-v1.mp4`, 60 s, 12 MB) se sirve desde Firebase Hosting con caché larga; el nombre lleva versión, así que una versión nueva debe usar otro nombre. Se abre en una ventana desde la portada del hero y no se descarga hasta que alguien la abre.
+- `NEXT_PUBLIC_PRODUCT_VIDEO_CAPTIONS_URL`: opcional. Por defecto, `public/video/citara-video-v1.es.vtt` (subtítulos en español).
 
 Las variables públicas se incorporan durante el build: recompilar después de cambiarlas. Falta el formulario por petición expresa; no se registra ningún lead ni se hace pasar una solicitud por enviada. La Cloud Function correspondiente se añadirá en **citara-prod**, con una reescritura `/api/...` del Hosting `marketing`, cuando se defina el formulario; no hay una función vacía desplegada ni un endpoint fingido.
 
@@ -87,7 +87,7 @@ npm run preview
 npm run audit:mobile
 ```
 
-El comando genera `qa/lighthouse-mobile.html` y `.json`; `npm run audit:check` falla si rendimiento es menor de 90. Ejecutar en inicio y planes después de incorporar el video real y nuevamente contra Firebase. El resultado de laboratorio no garantiza la velocidad de todas las conexiones en Colombia.
+El comando genera `qa/lighthouse-mobile.html` y `.json`; `npm run audit:check` falla si rendimiento es menor de 90. Ejecutar en inicio y planes, y nuevamente contra Firebase. El resultado de laboratorio no garantiza la velocidad de todas las conexiones en Colombia.
 
 ## Identidad
 
@@ -103,4 +103,4 @@ Los WOFF2 locales están bajo OFL; licencias en `docs/licenses/`. No se ha reali
 
 ## Antes de publicación comercial
 
-Completar número, precios, implementación, video real y textos legales; definir el formulario aparte; conectar GitHub/Firebase; medir Lighthouse; retirar `robots: { index: false, follow: false }` en `app/layout.tsx` una vez aprobados los contenidos.
+Completar número, precios, implementación y textos legales; definir el formulario aparte; conectar GitHub/Firebase; medir Lighthouse; retirar `robots: { index: false, follow: false }` en `app/layout.tsx` una vez aprobados los contenidos.
