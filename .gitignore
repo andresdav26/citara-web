@@ -7,3 +7,8 @@ out/
 .firebase/
 qa/
 public/qa/
+# Paquete del rediseño: solo se versiona REDISENO.md.
+docs/rediseno/video/
+docs/rediseno/referencias/
+docs/rediseno/capturas/
+docs/rediseno/marca/
