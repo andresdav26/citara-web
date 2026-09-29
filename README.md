@@ -27,7 +27,6 @@ npm run preview
 - `/prueba/`: explicación de activación y espacio reservado para el formulario solicitado aparte.
 - `/ventas/`: WhatsApp o aviso de número pendiente.
 - `/privacidad/`, `/terminos/`: estructuras legales, explícitamente pendientes de aprobación.
-- `/identidad/`: seis direcciones de marca, con descargas SVG.
 
 ## Información pendiente
 
@@ -92,17 +91,16 @@ El comando genera `qa/lighthouse-mobile.html` y `.json`; `npm run audit:check` f
 
 ## Identidad
 
-`public/brand/` contiene 18 SVG: 6 direcciones × claro/oscuro/monocromo. Todos los nombres son trazos vectoriales; no hay elementos `<text>`, imágenes incrustadas ni fuentes necesarias para usarlos. El logo aplicado provisionalmente es **01 Cuerdas**. Para cambiarlo, sustituir `citara.svg` y `citara-light.svg` por la dirección seleccionada.
+`public/brand/` contiene el logo final, solo en su versión gruesa:
 
-- **Cuerdas**: lettering original; una t como puente del instrumento.
-- **Contrapunto**: contraste editorial y travesaño doble.
-- **Armonía**: dos A construidas con cuerdas.
-- **Enlace**: gesto que une i y t.
-- **Resonancia**: serif de alto contraste y vibración dentro de la c.
-- **Compás**: construcción compacta, cortes de cuerda y pulso.
+- `citara-claro.svg`: pizarra y ámbar, para fondos claros (header y maquetas del producto).
+- `citara-oscuro.svg`: blanco verdoso y ámbar, para fondos oscuros (pie).
+- `citara-simbolo-claro.svg` y `citara-simbolo-oscuro.svg`: solo el símbolo.
 
-Los WOFF2 locales y las bases de algunos contornos están bajo OFL; licencias en `docs/licenses/`. Los SVG contienen adaptaciones gráficas, no archivos de fuente modificados. No se ha realizado una búsqueda de registro marcario.
+`public/icon.svg` es el favicon: el símbolo sobre un cuadrado redondeado pizarra. Todos son trazos vectoriales, sin elementos `<text>`, imágenes incrustadas ni fuentes necesarias. Se vectorizaron a partir de una imagen; más adelante conviene un redibujo profesional. Se pronuncia ci-TA-ra, palabra llana y sin tilde. Eslogan: "Tu agenda en orden. Tu negocio, a otro ritmo." Las seis exploraciones anteriores y la página `/identidad/` se retiraron; quedan en el historial de git.
+
+Los WOFF2 locales están bajo OFL; licencias en `docs/licenses/`. No se ha realizado una búsqueda de registro marcario.
 
 ## Antes de publicación comercial
 
-Completar número, precios, implementación, video real y textos legales; definir el formulario aparte; conectar GitHub/Firebase; medir Lighthouse; retirar `robots: { index: false, follow: false }` en `app/layout.tsx` una vez aprobados los contenidos. La vista de identidad sigue siendo noindex y no aparece en la navegación comercial.
+Completar número, precios, implementación, video real y textos legales; definir el formulario aparte; conectar GitHub/Firebase; medir Lighthouse; retirar `robots: { index: false, follow: false }` en `app/layout.tsx` una vez aprobados los contenidos.
