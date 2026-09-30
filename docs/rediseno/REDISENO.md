@@ -35,7 +35,9 @@ Derivados (ya verificados en contraste):
 | Hero, texto secundario | `#D6DCDB` | Sobre pizarra |
 | Hero, línea inferior | `#576673` | Sobre pizarra |
 | Sección "Dos lados" | `#DEEBE5` | Fondo de la sección |
-| Tarjetas de rubros | `#D5E5DF`, `#F9EDD6`, `#DAEBE9` | Spas, fisioterapia, láser |
+| Paneles de rubros (`--rubro-1` a `--rubro-3`) | `#D5E5DF`, `#F9EDD6`, `#DAEBE9` | Spas, fisioterapia, láser (ver sección 13) |
+| Pestañas de rubros, borde (`--borde-pestana`) | `#7C8891` | Pestaña no seleccionada sobre blanco (3,57:1) |
+| Chat de ejemplo (`--chat-cabecera`, `--chat-fondo`, `--chat-linea`) | `#F5FAF8`, `#EEF5F2`, `#DDE7E4` | Cabecera, fondo y línea del chat de los paneles de rubros |
 | Banda de prueba, texto secundario | `#EFF7F3` | Sobre petróleo |
 | Banda de prueba, línea | `#549DAB` | Sobre petróleo |
 | Cierre, fondo | `#F9F0DC` | Tarjeta de cierre |
@@ -75,7 +77,7 @@ Orden nuevo:
 2. Hero (fondo de cuerdas y portada del video)
 3. "El día no tiene más horas" (nueva, reemplaza la grilla de problemas)
 4. "Dos lados de una misma cita" (recorrido con pulso)
-5. "Citara habla el idioma de tu negocio" (rubros y tarjeta de ventas nueva)
+5. "Citara habla el idioma de tu negocio" (rubros de ejemplo en pestañas y tarjeta de ventas; ver sección 13)
 6. Banda de prueba
 7. Preguntas frecuentes
 8. Cierre
@@ -125,7 +127,7 @@ Limita el dibujo a unos 30 fps. Con pausa fuera de pantalla y en pestaña oculta
   - `controls`, `playsInline` y `preload="none"`. No se descarga nada hasta que se abre.
   - Reproduce al abrir; como lo inicia el usuario, puede tener sonido.
   - Pista `<track kind="captions" srcLang="es" default>`.
-  - `poster` con `citara-video-v1-portada.jpg`.
+  - `poster` con `citara-video-v2-portada.jpg` (ver sección 15).
   - Botón de cerrar de 44 px con `aria-label="Cerrar video"`.
   - Se cierra con Esc. Al cerrar, el video se pausa y el foco vuelve al botón de reproducir.
 - Fuente del video: se mantiene `site.video` y `site.videoCaptions` en `lib/site.ts` (`NEXT_PUBLIC_PRODUCT_VIDEO_URL` y `NEXT_PUBLIC_PRODUCT_VIDEO_CAPTIONS_URL`). **Si no hay video configurado, el botón de reproducir no se muestra.** Nada de botones muertos.
@@ -163,6 +165,10 @@ Referencia: `referencias/lienzo/DosLados.dc.html`.
 - La lista de pasos lleva a cada escena.
 - **Movimiento reducido.** Cada escena muestra directamente su estado final, sin pulso.
 
+### 5.3 Pestañas de rubros
+
+Ver sección 13. Al cambiar de pestaña, los mensajes del chat de ejemplo entran escalonados. No hay reproducción automática ni animación ligada al scroll, y con movimiento reducido no hay animación.
+
 ## 6. Tarjeta "¿Tu negocio es otro? Hablemos."
 
 Reemplaza `.other-business`:
@@ -170,14 +176,14 @@ Reemplaza `.other-business`:
 - Tarjeta con borde de 2 px petróleo, fondo `#E3F0EE`, radio de 12 px y relleno de 26 × 32 px.
 - Ícono: círculo petróleo de 52 px con un ícono de chat blanco.
 - Título en Lora de 28 px: "¿Tu negocio es otro? *Hablemos.*", con "Hablemos." en cursiva 700 y petróleo.
-- Texto en 16 px, color `--muted`: "Si tu negocio pertenece a otro rubro, conversemos para evaluar el caso."
+- Texto en 16 px, color `--muted`: "Si tu negocio trabaja con citas, cuéntanos cómo agendas hoy y vemos juntos si Citara encaja." (texto del anexo 1, sección 13).
 - Botón principal ámbar con texto pizarra: "Hablar con ventas".
 - En móvil, todo apilado y el botón a ancho completo.
 
 ## 7. Resto de secciones: solo cambia el color
 
 - **Header:** fondo blanco verdoso, logo claro, botón "Prueba gratis 7 días" ámbar con texto pizarra.
-- **Rubros:** fondos de la tabla de la sección 1.
+- **Rubros:** fondos de la tabla de la sección 1. La estructura cambió en el anexo 1: pestañas en lugar de la grilla (ver sección 13).
 - **Banda de prueba:** fondo petróleo, texto blanco verdoso, `em` y números en salvia, botón ámbar.
 - **Preguntas:** signos "+" en petróleo.
 - **Cierre:** fondo `#F9F0DC`.
@@ -203,6 +209,20 @@ Reemplaza `.other-business`:
 | `app/layout.tsx` | Favicon si cambia la ruta |
 | `docs/VALIDACION.md` | Marcar como resueltos el logo final y el video con subtítulos; registrar las validaciones nuevas |
 
+Anexo 1 (secciones 12 a 15):
+
+| Archivo | Cambio |
+|---|---|
+| `lib/verticals.ts` (nuevo) | Única lista de rubros de ejemplo |
+| `components/Verticals.tsx` (nuevo) | Pestañas y paneles de rubros |
+| `app/page.tsx` | Encabezado de rubros, pestañas, texto de la tarjeta de ventas y pregunta "¿Sirve para mi tipo de negocio?" |
+| `app/globals.css`, `app/typography.css` | Estilos de pestañas y paneles; eliminar `.sector-grid`, `.sector-index` y `.sector-foot` |
+| `app/ventas/page.tsx`, `app/layout.tsx` | Textos sin lista fija |
+| `lib/site.ts` | Video v2 por defecto |
+| `public/video/` | Archivos v2 con nombres nuevos; se borran los v1 |
+| `CLAUDE.md`, `README.md` | Descripción del producto, "rubros de ejemplo" y video v2 |
+| `docs/VALIDACION.md` | Registrar las comprobaciones del anexo que se ejecutaron |
+
 ## 9. Decisiones pendientes: preguntar antes de implementar
 
 1. **Alojamiento del video** (12 MB):
@@ -226,6 +246,135 @@ Reemplaza `.other-business`:
 ## 11. Contenido del paquete
 
 - `marca/`: logos SVG y favicon.
-- `video/`: `citara-video-v1.mp4` (60 s, 1080p, 12 MB), `citara-video-v1.es.vtt`, `citara-video-v1-portada.jpg` y el guion v3.
+- `video/`: video v1 y guion v3. Reemplazados por la v2 del anexo 1 (ver abajo y sección 15).
 - `referencias/lienzo/`: prototipos aprobados (`Main`, `Problemas`, `DosLados`, `Movil`, `Paleta` y `Logo`).
-- `referencias/video-fuente/`: código con el que se generó el video (ver su README). No forma parte del sitio; no lo copies dentro de `app/` ni de `components/`.
+- `referencias/video-fuente/`: código con el que se generó el video v1 (ver su README). No forma parte del sitio; no lo copies dentro de `app/` ni de `components/`.
+
+Paquete del anexo 1 (`cambios-2/`, local y fuera de git):
+
+- `ANEXO.md`: el texto original del anexo, integrado aquí como secciones 12 a 15.
+- `video/`: `citara-video-v2.mp4` (61 s, 1080p, 12,4 MB, -16 LUFS), `citara-video-v2.es.vtt`, `citara-video-v2-portada.jpg` y el guion v4.
+- `referencias/lienzo/`: prototipos de la sección de rubros (`Rubros` para escritorio y `RubrosMovil` para móvil).
+- `referencias/video-fuente/`: código actualizado con el que se generó el video v2. Reemplaza al del primer paquete y tampoco forma parte del sitio.
+
+## 12. Una sola lista de rubros: `lib/verticals.ts`
+
+*Anexo 1.* La lista de rubros (spas, centros de fisioterapia y depilación láser) estaba escrita a mano en varios archivos, en algunos con conteos ("estos tres rubros") o con la frase "hoy funciona en". Cada rubro nuevo obligaba a editar todos esos lugares y dejaba textos desactualizados.
+
+La regla desde ahora:
+
+- **Se describe la categoría y los rubros van como ejemplos.** Citara es para negocios con cita previa; los rubros son ejemplos ("por ejemplo", "como").
+- **Nunca se cuentan rubros ni se escribe "hoy funciona en".**
+- **Nunca se promete que Citara ya funciona para rubros que no están configurados.** Por eso "por ejemplo", y no "entre otros".
+
+`lib/verticals.ts` es la única fuente de los rubros del sitio. Agregar un rubro debe ser agregar una entrada, sin tocar componentes.
+
+```ts
+export type Vertical = {
+  id: string;               // 'spa' | 'fisioterapia' | 'depilacion-laser'
+  tab: string;              // etiqueta de la pestaña
+  name: string;             // título del panel
+  subtitle: string;
+  description: string;
+  tags: string[];
+  tone: string;             // variable CSS del fondo del panel (tokens de rubros)
+  example: {
+    business: string;       // "Tu spa", "Tu centro de fisioterapia", "Tu clínica"
+    initial: string;
+    messages: { from: 'cliente' | 'citara'; text: string }[];
+    handoff?: string;       // aviso de paso al equipo, si aplica
+  };
+};
+```
+
+El contenido sale de `cambios-2/referencias/lienzo/Rubros.dc.html`:
+
+| Pestaña | Título | Subtítulo | Etiquetas |
+|---|---|---|---|
+| Spas | Spas | Más calma, también en recepción. | Masajes · Servicios · Cabinas |
+| Fisioterapia | Centros de fisioterapia | La agenda acompaña cada sesión. | Pacientes · Sesiones · Profesionales |
+| Depilación láser | Depilación láser | Cada sesión tiene su espacio. | Sesiones · Horarios · Equipo |
+
+Las descripciones son las de la grilla anterior de `app/page.tsx`. Conversaciones de ejemplo:
+
+- **Spa:**
+  - Cliente: "Hola, ¿tienen masaje relajante el sábado en la tarde?"
+  - Citara: "¡Hola! El sábado tengo 3:00 p. m. o 4:30 p. m. en la cabina 2. ¿Cuál prefieres?"
+  - Cliente: "La de las 3:00 p. m."
+  - Citara: "Listo. Tu masaje quedó para el sábado a las 3:00 p. m."
+- **Fisioterapia:**
+  - Cliente: "Buenas, necesito agendar mi próxima sesión con Juliana."
+  - Citara: "Claro. Juliana tiene espacio el martes a las 7:00 a. m. o a las 6:00 p. m. ¿Cuál te sirve?"
+  - Cliente: "Martes a las 7:00 a. m., por favor."
+  - Citara: "Hecho. Tu sesión con Juliana quedó para el martes a las 7:00 a. m."
+- **Depilación láser:**
+  - Cliente: "Hola, quiero agendar mi sesión de depilación láser."
+  - Citara: "¡Hola! Tengo el jueves a las 11:00 a. m. o a las 5:30 p. m. ¿Cuál prefieres?"
+  - Cliente: "¿La sesión duele?"
+  - Citara: "Esa pregunta la responde el equipo de la clínica. Ya les paso tu mensaje."
+  - Aviso: "Pasa a tu equipo · Por atender"
+
+## 13. Sección "Citara habla el idioma de tu negocio" (`#para-quien`)
+
+*Anexo 1.* Referencias: `cambios-2/referencias/lienzo/Rubros.dc.html` (escritorio) y `RubrosMovil.dc.html` (móvil).
+
+- **Encabezado:** se conservan el eyebrow y el título. El párrafo de la derecha pasa a ser: "Cada negocio con cita previa agenda a su manera: con sus servicios, sus profesionales y sus horarios. Citara trabaja con los tuyos. La atención profesional sigue en manos de tu equipo."
+- **Pestañas en lugar de la grilla de tres tarjetas:**
+  - Se generan desde `lib/verticals.ts`, precedidas por el texto "Por ejemplo:".
+  - Forma de píldora. La seleccionada lleva fondo pizarra y texto blanco verdoso; las demás, fondo blanco, borde `#7C8891` (3,57:1) y texto pizarra.
+  - Se acomodan en varias líneas si hacen falta. Sin números.
+- **Panel:**
+  - En escritorio, dos columnas: a la izquierda el título en Lora de 44 px, subtítulo, descripción y etiquetas en píldoras; a la derecha la tarjeta de chat de ejemplo.
+  - Debajo del chat, la leyenda "Conversación de ejemplo".
+  - Fondo según el tono del rubro (tokens `--rubro-*`), radio de 16 px.
+  - En móvil, todo apilado (título de 32 px).
+- **Accesibilidad:** patrón de pestañas WAI-ARIA completo.
+  - `role="tablist"`, `tab` y `tabpanel`, con `aria-selected` y `aria-controls`.
+  - `tabindex` itinerante; flechas izquierda y derecha, Inicio y Fin.
+- **Sin JavaScript** (HTML estático): se muestran todos los paneles apilados, y las pestañas aparecen cuando el JS toma el control. Es el mismo criterio de "versión sin fijar hasta que el JS decida" que usan `BusyDay` y `ProductDemo`.
+- **Movimiento:**
+  - Al cambiar de pestaña, los mensajes entran escalonados: 0,38 s cada uno, con 0,16 s de separación.
+  - Sin reproducción automática y sin animación ligada al scroll.
+  - Con `prefers-reduced-motion`, sin animación.
+- **Tarjeta de ventas:** se conserva el diseño de la sección 6. Texto nuevo: "Si tu negocio trabaja con citas, cuéntanos cómo agendas hoy y vemos juntos si Citara encaja."
+- **Limpieza:** se eliminan los estilos de la grilla anterior (`.sector-grid`, `.sector-index`, `.sector-foot`).
+
+## 14. Textos sin lista fija en el resto del sitio
+
+*Anexo 1.*
+
+| Archivo | Texto nuevo |
+|---|---|
+| `app/page.tsx`, pregunta "¿Sirve para mi tipo de negocio?" | "Citara está pensada para negocios que trabajan con cita previa, como spas, centros de fisioterapia y clínicas de depilación láser. Si el tuyo es de otro tipo, conversemos para evaluar el caso." |
+| `app/ventas/page.tsx` | "Si tu negocio trabaja con citas pero no se parece a nuestros ejemplos, primero evaluamos tu caso contigo." |
+| `app/layout.tsx`, `description` | "Citara agenda, confirma, reprograma y cancela citas por WhatsApp para negocios con cita previa en Colombia, como spas, centros de fisioterapia y clínicas de depilación láser." |
+| `CLAUDE.md` | Describir el producto como agente de agendamiento para negocios con cita previa, con los tres rubros como ejemplos |
+| `README.md` | "rubros actuales" → "rubros de ejemplo" |
+
+Los ejemplos ilustrativos de `components/BusyDay.tsx` (mensajes y citas de ejemplo) no son listas de rubros y se quedan como están.
+
+## 15. Video v2
+
+*Anexo 1.* Archivos en `cambios-2/video/`:
+
+- `citara-video-v2.mp4`: 61 s, 1080p, 12,4 MB, -16 LUFS. Tiene la narración actualizada, música nueva y la escena de rubros nueva.
+- `citara-video-v2.es.vtt`
+- `citara-video-v2-portada.jpg`
+
+Pasos:
+
+1. Copiar los tres archivos a `public/video/`.
+2. Actualizar los valores por defecto de `site.video`, `site.videoCaptions` y `site.videoPoster` en `lib/site.ts`.
+3. Borrar los tres archivos v1 de `public/video/`.
+4. **No reemplazar los archivos v1 con el mismo nombre.** `firebase.json` sirve `/video/**` con `Cache-Control: public,max-age=31536000,immutable`, así que cualquier navegador o CDN que ya tenga la v1 la seguiría mostrando durante un año. El nombre nuevo es lo que hace llegar la v2. Toda versión futura del video debe llevar también un nombre nuevo.
+5. Actualizar las menciones a la v1 en este documento y en `CLAUDE.md`.
+
+Criterios de aceptación del anexo:
+
+- `npm run check` pasa.
+- `grep -rniE "tres rubros|hoy funciona en" app components lib` no devuelve nada.
+- Las pestañas se operan solo con teclado; sin JavaScript se ven los tres paneles; con movimiento reducido no hay animaciones.
+- Sin desbordamiento horizontal a 320, 360, 390 y 430 px.
+- La ventana del video reproduce la v2 con sus subtítulos.
+- En `public/video/` solo quedan los archivos v2.
+- `docs/VALIDACION.md` registra solo las comprobaciones que realmente se ejecutaron.
