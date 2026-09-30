@@ -15,13 +15,17 @@ h2, .section-heading h2, .center-heading h2, .trial-layout h2,
 .subpage-heading h1, .contact-page h1, .legal-page h1 {
   font-size: clamp(2.75rem, 4.8vw, 4.5rem);
 }
-.tour-copy h3, .sector-grid h3 {
+.tour-copy h3 {
   font-family: var(--font-editorial); font-weight: 500;
   font-size: clamp(1.5rem, 2.5vw, 2.1rem); line-height: 1.22; letter-spacing: -.02em;
 }
+.verticals-copy h3 {
+  font-family: var(--font-editorial); font-weight: 500;
+  font-size: 2.75rem; line-height: 1.1; letter-spacing: -.02em;
+}
 .hero-copy > p:not(.eyebrow) { font-size: 1.125rem; line-height: 1.55; }
 .section-heading > p, .center-heading > p:last-child, .tour-copy p:last-child,
-.sector-grid p, .feature-notes p, .trial-steps p {
+.feature-notes p, .trial-steps p {
   font-size: 1rem; line-height: 1.6;
 }
 .eyebrow { font-weight: 600; letter-spacing: .1em; }
@@ -47,6 +51,7 @@ h2, .section-heading h2, .center-heading h2, .trial-layout h2,
   .hero-copy > p:not(.eyebrow) { font-size: 1.0625rem; line-height: 1.55; }
   .hero .eyebrow, .center-heading .eyebrow, .closing .eyebrow { font-size: .6875rem; }
   .subpage-heading h1, .contact-page h1, .legal-page h1 { font-size: clamp(2rem, 9vw, 2.75rem); }
-  .tour-copy h3, .sector-grid h3 { font-size: 1.625rem; }
+  .tour-copy h3 { font-size: 1.625rem; }
+  .verticals-copy h3 { font-size: 2rem; }
   .nav-actions .button { font-size: .8125rem; }
 }
