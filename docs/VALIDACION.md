@@ -1,3 +1,16 @@
+# "Dos lados" fijo en celulares y tablets — 30 de septiembre de 2026
+
+Rama `feat/dos-lados-movil`, sección 16 de `docs/rediseno/REDISENO.md`. Pruebas con el Chrome del sistema (Chrome 131, headless, vía puppeteer-core) sobre el export servido en local, con emulación de viewport táctil en los tamaños de celular.
+
+- `npm run check`: correcto al final de cada fase.
+- **Escritorio sin cambios:** 77 capturas de la sección antes y después del cambio (1366×620, 1440×900, 1920×950 y 1100×700, cada 250 px de recorrido, con animaciones y transiciones detenidas) y el HTML de `#como-funciona` en cada tamaño: idénticos byte a byte. Dos corridas del build anterior también salieron idénticas entre sí, así que la comparación es fiable.
+- **Escenario móvil:** se fija a 360×640, 375×667, 390×844, 430×932, 820×1180 y 1024×768, sin errores de JS y sin que ningún bloque salga de la escena.
+- **Resultado de cada escena** (390×844): al inicio de "Agenda", la tarjeta muestra "10:00 · Hora libre"; al final de cada escena muestra Agendada, Confirmada, 15:00 Reprogramada, Cancelada (tachada) y "Por atender 1 · Mariana · Consulta clínica", cada una con su línea de resultado.
+- **Indicador de pasos:** un clic en cada segmento lleva a su escena (1 a 5, comprobado con `aria-current`). Área táctil de 65×24 px por segmento a 390 px.
+- **Respaldo con el recorrido por pasos:** con movimiento reducido, sin JS, a 320×568 y en horizontal (844×390).
+- Sin desbordamiento horizontal en la página de inicio a 320, 360, 390, 430, 820 y 1024 px. "El día" se sigue fijando en los mismos tamaños que antes.
+- **No revisado:** teléfonos y tablets físicos, Safari (iOS), Firefox y lectores de pantalla reales. El comportamiento de la barra de direcciones del navegador móvil al hacer scroll solo se puede comprobar en un teléfono.
+
 # Fijado en laptops de poca altura — 30 de septiembre de 2026
 
 En `citara-web.web.app`, "El día no tiene más horas" y "Dos lados de una misma cita" no se fijaban en una laptop con el navegador al 100 % (sí al 90 %). El despliegue era idéntico a `main`: las secciones exigían 700 px de alto útil y la ventana tenía menos. El umbral de escritorio bajó a 620 px en las dos secciones, con una versión compacta entre 620 y 700 px. Pruebas con el Chrome del sistema (Chrome 131, headless, vía puppeteer-core) sobre el export servido en local.
