@@ -1,3 +1,15 @@
+# Fijado en laptops de poca altura — 30 de septiembre de 2026
+
+En `citara-web.web.app`, "El día no tiene más horas" y "Dos lados de una misma cita" no se fijaban en una laptop con el navegador al 100 % (sí al 90 %). El despliegue era idéntico a `main`: las secciones exigían 700 px de alto útil y la ventana tenía menos. El umbral de escritorio bajó a 620 px en las dos secciones, con una versión compacta entre 620 y 700 px. Pruebas con el Chrome del sistema (Chrome 131, headless, vía puppeteer-core) sobre el export servido en local.
+
+- `npm run check`: correcto.
+- **Antes del cambio**, sobre el sitio publicado: a 1440×900 las dos secciones se fijaban y no había errores de JS; a 1366×657 y a 1440×800 con zoom del 125 % no se fijaba ninguna.
+- **Después**, en local: las dos secciones se fijan a 1366×620, 1366×657, 1280×640, 1536×690, 1440×900 y 1920×950. A 1280×610 se muestran sin fijar, como corresponde.
+- "El día" con todas las tarjetas activas (p = 0,9): en ninguno de esos tamaños quedan cortadas las etiquetas inferiores de las tarjetas ni se tapa la nota "Vista ilustrativa". Entre 620 y 700 px las viñetas muestran tantas filas como en el diseño a 1440×900 (en la tarjeta 3 se ven 2 de los 3 mensajes, igual que a 1440×900).
+- "Dos lados" a 1366×620, escena por escena: las citas, la tarjeta "Por atender" y la línea de resultado quedan dentro del panel. En "Reprograma", la cita llega a la fila de las 15:00 y aparece "Horario actualizado en la agenda".
+- Sin cambios en móvil: a 360×640, 390×844 y 430×932 "El día" se sigue fijando y a 320×568 no. Con movimiento reducido "El día" no se fija. Sin desbordamiento horizontal en la página de inicio a 320, 360, 390, 430, 1024, 1280, 1366 y 1440 px.
+- **No medido:** el sitio publicado después del cambio (requiere un nuevo despliegue), Lighthouse, Safari, Firefox y laptops físicas.
+
 # Validación del anexo 1 (rubros de ejemplo y video v2) — 30 de septiembre de 2026
 
 Rama `redesign/brand-2026`, secciones 12 a 15 de `docs/rediseno/REDISENO.md`. Pruebas con el Chrome del sistema (Chrome 131, headless, vía puppeteer-core) sobre el export servido en local con `scripts/serve.mjs`. Node 22.23.2.

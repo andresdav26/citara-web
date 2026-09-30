@@ -153,6 +153,7 @@ Referencia: `referencias/lienzo/Problemas.dc.html`. Toda la lógica está en `re
   - 03: el estado pasa de "Abierto hasta 7:00 p. m." a "Cerrado" en p = 0,786, y entran mensajes a las 8:14, 9:02 y 9:47 p. m.
 - **Modo noche.** Entre p = 0,786 y 0,846, el fondo pasa de blanco verdoso a pizarra, el texto cambia a la mitad del recorrido y el acento pasa de petróleo a ámbar (petróleo sobre pizarra no se lee). Colores de noche: tarjeta `#3D4D5E`, texto secundario `#CED4D4`, eyebrow salvia, `em` ámbar.
 - **Movimiento reducido.** Sin sección fija: las tres tarjetas activas, colores de día y sin animaciones.
+- **Altura mínima.** En escritorio se fija desde 620 px de alto útil (antes 700 px), para cubrir laptops de 768 px de alto con el navegador al 100 %. Entre 620 y 700 px se usa una versión compacta (menos márgenes y viñetas que ocupan el espacio libre de cada tarjeta). Por debajo de 620 px se muestra sin fijar.
 - **Móvil.** No se prototipó. Propón en el plan una versión vertical (por ejemplo, el reloj fijo arriba y las tarjetas apiladas, con el mismo modo noche) antes de implementarla.
 
 ### 5.2 "Dos lados de una misma cita" (`components/ProductDemo.tsx`)
@@ -160,7 +161,7 @@ Referencia: `referencias/lienzo/Problemas.dc.html`. Toda la lógica está en `re
 Referencia: `referencias/lienzo/DosLados.dc.html`.
 
 - Se conservan las 5 escenas y su texto actual: Agenda, Confirma, Reprograma, Cancela y Pasa al equipo.
-- **Escenario fijo** con unos 700 px de scroll por escena. Los mensajes aparecen según el avance dentro de la escena (`sp`): el mensaje i aparece en sp = 0,06 + i × 0,13. Los mensajes del agente muestran "escribiendo" 0,06 antes.
+- **Escenario fijo** desde 1100 px de ancho y 620 px de alto útil (antes 700 px); entre 620 y 700 px, el panel compacta sus márgenes para que la fila de las 15:00 y el resultado quepan. Unos 700 px de scroll por escena. Los mensajes aparecen según el avance dentro de la escena (`sp`): el mensaje i aparece en sp = 0,06 + i × 0,13. Los mensajes del agente muestran "escribiendo" 0,06 antes.
 - **Pulso.** Tras el último mensaje, un punto petróleo con halo y trazo recorre, durante 0,2 de la escena, el camino del teléfono a la celda de la agenda afectada, o a la pestaña "Por atender" en la escena del equipo. Al llegar se aplica el resultado (estado u hora de la cita), con un anillo de realce breve.
 - La lista de pasos lleva a cada escena.
 - **Movimiento reducido.** Cada escena muestra directamente su estado final, sin pulso.

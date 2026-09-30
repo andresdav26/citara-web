@@ -14,8 +14,8 @@ const LEAD = 0.06; // cada tarjeta se activa un poco antes de su hora
 const CLOSE = 0.786; // 7:00 p. m.
 const NIGHT = 0.06; // tramo en el que el fondo pasa a pizarra
 const STILL_P = 0.5; // la versión sin fijar muestra las 3:00 p. m.
-// Se fija con altura suficiente: 700 px en escritorio y 600 px en móvil (el título queda fuera de la escena).
-const PIN_QUERY = '(prefers-reduced-motion: no-preference) and (min-width: 900px) and (min-height: 700px), (prefers-reduced-motion: no-preference) and (max-width: 899.98px) and (min-height: 600px)';
+// Se fija con altura suficiente: 620 px en escritorio (laptops de 768 px de alto) y 600 px en móvil (el título queda fuera de la escena).
+const PIN_QUERY = '(prefers-reduced-motion: no-preference) and (min-width: 900px) and (min-height: 620px), (prefers-reduced-motion: no-preference) and (max-width: 899.98px) and (min-height: 600px)';
 
 const HOURS = [8, 10, 12, 14, 16, 18, 20, 22];
 const MINOR = new Set([10, 14, 18, 20]); // marcas sin etiqueta en móvil

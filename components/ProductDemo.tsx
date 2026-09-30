@@ -266,7 +266,7 @@ function Tour() {
 }
 
 const NOTE = 'Demostración ilustrativa con datos de ejemplo. No se envían mensajes reales.';
-const STAGE_QUERY = '(min-width: 1100px) and (min-height: 700px)';
+const STAGE_QUERY = '(min-width: 1100px) and (min-height: 620px)';
 const SCENE_SCROLL = 700; // recorrido por escena: 4400 − 900 px para cinco escenas en el prototipo
 const ANCHOR_OFFSET = 40; // el ancla queda un poco dentro de su escena, después del scroll-padding del header
 const threshold = (i: number) => 0.06 + i * 0.13; // el mensaje i aparece en este avance de la escena
