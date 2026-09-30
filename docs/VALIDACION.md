@@ -11,6 +11,7 @@ Rama `redesign/brand-2026`, secciones 12 a 15 de `docs/rediseno/REDISENO.md`. Pr
 - **Video v2 (1440 y 390 px):** ninguna solicitud a `/video/` antes de abrir la ventana. Al abrirla con Enter se piden `citara-video-v2-portada.jpg`, `citara-video-v2.mp4` y `citara-video-v2.es.vtt`. El video (61 s, 1920×1080) se reproduce, los subtítulos en español quedan activos (19 señales) y el foco pasa a "Cerrar video". Esc cierra la ventana, pausa el video y devuelve el foco a "Ver video".
 - `public/video/` solo contiene los tres archivos v2 (revisado con `git ls-files`).
 - Revisión visual del prototipo contra capturas a 1440 y 390 px: coincide en estructura, colores y tamaños.
+- **Ajustes posteriores al anexo:** el botón de ventas dice "Habla con nosotros" (4 botones en la página de inicio) y se quitaron los tres accesos al panel ("Ir al panel" en el header de escritorio y en el menú móvil, y "Acceder al panel" en el pie), junto con `site.panel` y los estilos `.panel-link`. Comprobado: ningún enlace al panel ni a `citara-prod` en el DOM de la página de inicio ni en los HTML de `out/`, y sin desbordamiento horizontal en las 7 rutas a 320, 360, 390, 430, 1024 y 1440 px. Header, menú móvil y pie revisados en captura.
 - **No ejecutado en este anexo:** Lighthouse, Safari, Firefox, teléfonos físicos y lectores de pantalla reales. Los resultados de Lighthouse de abajo son anteriores al anexo.
 
 # Validación del rediseño — 29 de septiembre de 2026
