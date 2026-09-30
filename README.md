@@ -58,6 +58,17 @@ npm run build
 npm run deploy
 ```
 
+### Vista previa antes de publicar
+
+Para revisar una rama (por ejemplo, en el celular) sin tocar el sitio en vivo:
+
+```bash
+npm run deploy:preview                          # canal con el nombre de la rama actual, vence en 7 días
+npm run deploy:preview -- dos-lados --expires 3d  # canal y vencimiento propios (máximo 30d)
+```
+
+El script compila y publica en un canal temporal de Firebase Hosting del target `marketing`. La CLI muestra al final la URL de la vista previa, distinta de la del sitio en vivo. Tiene la misma protección que `npm run deploy`.
+
 `npm run deploy` se detiene si falta la asignación o si apunta a `citara-prod`. No hay despliegue automático en cada push. El proyecto solo contiene el target comercial, no altera la configuración del repositorio del panel. `firebase.json` tiene rutas estáticas y caché inmutable para los bundles con hash; no usa una reescritura SPA que rompa los 404.
 
 ## GitHub

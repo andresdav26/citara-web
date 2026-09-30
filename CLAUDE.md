@@ -17,6 +17,7 @@ npm run typecheck    # tsc --noEmit
 npm run build        # next build --webpack → static export in out/
 npm run check        # typecheck + build (what CI runs; must pass before committing)
 npm run preview      # serves out/ on :3000 (PORT env) with 404.html fallback
+npm run deploy:preview # build + Firebase preview channel for the marketing target (channel = branch name, 7d; same guard as deploy)
 npm run audit:mobile # Lighthouse mobile against localhost:3000 (optional URL arg) → qa/lighthouse-mobile.report.*
 npm run audit:check  # fails if Lighthouse performance < 90 (preview serves uncompressed files, so it scores lower than Firebase)
 ```
@@ -42,7 +43,7 @@ Webpack is used on purpose (`--webpack` in both dev and build). Keep it that way
 ## Deployment
 
 - `firebase.json` uses the Hosting target `marketing` and serves `out/`. The Firebase project is `citara-prod`, whose default site `citara-prod.web.app` is the **existing product panel. Never deploy this site there.**
-- `npm run deploy` (`scripts/deploy.mjs`) refuses to run unless `.firebaserc` maps `marketing` to a separate site other than `citara-prod`. Do not weaken this guard.
+- `npm run deploy` (`scripts/deploy.mjs`) refuses to run unless `.firebaserc` maps `marketing` to a separate site other than `citara-prod`. `npm run deploy:preview` (`scripts/deploy-preview.mjs`) uses the same guard and only deploys to a temporary preview channel. Do not weaken either guard.
 - CI (`.github/workflows/ci.yml`) runs typecheck and build on push and PR, then uploads `out/` as an artifact. It never deploys.
 
 ## Conventions
