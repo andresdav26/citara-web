@@ -22,7 +22,7 @@ npm run preview
 
 ## Páginas
 
-- `/`: propuesta comercial, problema, demo ilustrativa, rubros actuales, prueba y preguntas frecuentes.
+- `/`: propuesta comercial, problema, demo ilustrativa, rubros de ejemplo, prueba y preguntas frecuentes.
 - `/planes/`: mensual, trimestral, semestral, anual e implementación.
 - `/prueba/`: explicación de activación y espacio reservado para el formulario solicitado aparte.
 - `/ventas/`: WhatsApp o aviso de número pendiente.
