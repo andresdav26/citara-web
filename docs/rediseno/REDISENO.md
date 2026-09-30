@@ -379,3 +379,29 @@ Criterios de aceptación del anexo:
 - La ventana del video reproduce la v2 con sus subtítulos.
 - En `public/video/` solo quedan los archivos v2.
 - `docs/VALIDACION.md` registra solo las comprobaciones que realmente se ejecutaron.
+
+## 16. "Dos lados" fijo en celulares y tablets
+
+Aprobado el 30 de septiembre de 2026, sin prototipo en el lienzo. Complementa la sección 5.2. La versión de escritorio (`Stage`) no cambia.
+
+**Cuándo se usa:**
+
+| Pantalla | Versión |
+|---|---|
+| ≥ 1100 px de ancho y ≥ 620 px de alto | Escenario fijo de escritorio (sección 5.2), sin cambios |
+| < 1100 px de ancho, ≥ 600 px de alto y sin movimiento reducido | Escenario fijo móvil (esta sección) |
+| Movimiento reducido, altura < 600 px o HTML estático | Recorrido por pasos actual |
+
+**Escena fija** (alto de la ventana menos el header), de arriba abajo:
+
+1. **Indicador de pasos:** "Paso 3 de 5 · Reprograma" sobre una barra de 5 segmentos. Cada segmento es un enlace a su escena (`#paso-N`), con el nombre del paso para lectores de pantalla y `aria-current="step"` en el activo. El segmento activo y los anteriores van en petróleo.
+2. **Título de la escena** en Lora de unos 22 px.
+3. **Teléfono** con la conversación, en el alto que sobra. Los mensajes aparecen según el avance del scroll con los mismos umbrales que en escritorio (`0,06 + i × 0,13` del avance de la escena) y el mismo "escribiendo". Si no caben, se ven los últimos, como en un chat real.
+4. **Tarjeta compacta de la agenda** con solo la cita afectada: hora, "Mariana · Masaje relajante" y estado. Antes del resultado muestra el estado anterior (en "Agenda", la hora libre). Al terminar la conversación, el pulso petróleo baja del teléfono a la tarjeta durante 0,2 de la escena, y al llegar se aplica el resultado con el anillo de realce: agendada, confirmada, 10:00 → 15:00 reprogramada, cancelada (tachada). En "Pasa al equipo", la tarjeta es "Por atender · Mariana · Consulta clínica". Debajo, la línea de resultado ("Cita creada desde WhatsApp", etc.).
+5. **Nota:** "Demostración ilustrativa con datos de ejemplo. No se envían mensajes reales."
+
+**Recorrido:** unos 600 px de scroll por escena (en escritorio, 700).
+
+**Accesibilidad:** la escena visual es `aria-hidden` salvo el indicador de pasos. Una lista `sr-only` conserva las cinco escenas completas, como en escritorio.
+
+**Garantía para escritorio:** componente y clases CSS propios (`.tour-mobile*`). No se modifican `Stage` ni los estilos `.tour-stage*`. Se comprueba con capturas de escritorio antes y después, que deben ser idénticas.
