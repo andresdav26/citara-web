@@ -35,8 +35,8 @@ En `lib/site.ts` están las tarifas (totales en COP por período), el precio de 
 Copia `.env.example` a `.env.local` y completa:
 
 - `NEXT_PUBLIC_SALES_WHATSAPP`: número de Citara en formato internacional, solo dígitos. Si falta, el botón dirige al aviso de ventas. El mensaje prellenado está en `site.salesMessage`.
-- `NEXT_PUBLIC_PRODUCT_VIDEO_URL`: opcional. Por defecto el video del producto (`public/video/citara-video-v1.mp4`, 60 s, 12 MB) se sirve desde Firebase Hosting con caché larga; el nombre lleva versión, así que una versión nueva debe usar otro nombre. Se abre en una ventana desde la portada del hero y no se descarga hasta que alguien la abre.
-- `NEXT_PUBLIC_PRODUCT_VIDEO_CAPTIONS_URL`: opcional. Por defecto, `public/video/citara-video-v1.es.vtt` (subtítulos en español).
+- `NEXT_PUBLIC_PRODUCT_VIDEO_URL`: opcional. Por defecto el video del producto (`public/video/citara-video-v2.mp4`, 61 s, 12,4 MB) se sirve desde Firebase Hosting con caché larga; el nombre lleva versión, así que una versión nueva debe usar otro nombre. Se abre en una ventana desde la portada del hero y no se descarga hasta que alguien la abre.
+- `NEXT_PUBLIC_PRODUCT_VIDEO_CAPTIONS_URL`: opcional. Por defecto, `public/video/citara-video-v2.es.vtt` (subtítulos en español).
 
 Las variables públicas se incorporan durante el build: recompilar después de cambiarlas. Falta el formulario por petición expresa; no se registra ningún lead ni se hace pasar una solicitud por enviada. La Cloud Function correspondiente se añadirá en **citara-prod**, con una reescritura `/api/...` del Hosting `marketing`, cuando se defina el formulario; no hay una función vacía desplegada ni un endpoint fingido.
 
