@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
 import VideoDialog from './VideoDialog';
+import MobileStage from './ProductDemoMobile';
 import { clamp, useMediaQuery, watchPinned } from '@/lib/pinned';
 
 // Recorrido "Dos lados de una misma cita" (docs/rediseno/REDISENO.md §5.2, prototipo DosLados.dc.html).
@@ -11,7 +12,7 @@ import { clamp, useMediaQuery, watchPinned } from '@/lib/pinned';
 // reproduce su conversación al entrar en pantalla y luego el panel muestra el resultado.
 
 type Message = { from: 'client' | 'agent'; text: string };
-type Scene = {
+export type Scene = {
   name: string;
   title: string;
   intro: string;
@@ -267,12 +268,14 @@ function Tour() {
 
 const NOTE = 'Demostración ilustrativa con datos de ejemplo. No se envían mensajes reales.';
 const STAGE_QUERY = '(min-width: 1100px) and (min-height: 620px)';
+// Por debajo de 1100 px, un escenario fijo de una columna (components/ProductDemoMobile.tsx, REDISENO.md §16).
+const MOBILE_QUERY = '(prefers-reduced-motion: no-preference) and (max-width: 1099.98px) and (min-height: 600px)';
 const SCENE_SCROLL = 700; // recorrido por escena: 4400 − 900 px para cinco escenas en el prototipo
 const ANCHOR_OFFSET = 40; // el ancla queda un poco dentro de su escena, después del scroll-padding del header
 const threshold = (i: number) => 0.06 + i * 0.13; // el mensaje i aparece en este avance de la escena
 const PULSE = 0.2; // duración del pulso dentro de la escena
 
-type StageView = { index: number; shown: number; typing: boolean; done: boolean; justDone: boolean; pulse: boolean; hint: boolean };
+export type StageView = { index: number; shown: number; typing: boolean; done: boolean; justDone: boolean; pulse: boolean; hint: boolean };
 
 function stageAt(p: number, reduced: boolean): { view: StageView; t: number } {
   const position = p * scenes.length;
@@ -483,10 +486,11 @@ function Stage() {
 export default function ProductDemo() {
   // El escenario fijo necesita ancho para tres columnas y altura para el teléfono.
   const staged = useMediaQuery(STAGE_QUERY);
+  const mobile = useMediaQuery(MOBILE_QUERY);
   return (
     <>
       <Reveal className={`center-heading${staged ? ' tour-heading-flow' : ''}`}><Heading /></Reveal>
-      {staged ? <Stage /> : <Tour />}
+      {staged ? <Stage /> : mobile ? <MobileStage scenes={scenes} stageAt={stageAt} note={NOTE} /> : <Tour />}
     </>
   );
 }
