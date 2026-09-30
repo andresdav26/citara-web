@@ -177,7 +177,7 @@ Reemplaza `.other-business`:
 - Ícono: círculo petróleo de 52 px con un ícono de chat blanco.
 - Título en Lora de 28 px: "¿Tu negocio es otro? *Hablemos.*", con "Hablemos." en cursiva 700 y petróleo.
 - Texto en 16 px, color `--muted`: "Si tu negocio trabaja con citas, cuéntanos cómo agendas hoy y vemos juntos si Citara encaja." (texto del anexo 1, sección 13).
-- Botón principal ámbar con texto pizarra: "Hablar con ventas".
+- Botón principal ámbar con texto pizarra: "Habla con nosotros" (antes "Hablar con ventas").
 - En móvil, todo apilado y el botón a ancho completo.
 
 ## 7. Resto de secciones: solo cambia el color
